@@ -3,10 +3,14 @@ import eurosFormatter from './euroFormatter.js';
 class Wallet {
   #name;
   #cash;
+  #dailyAllowance;
+  #dayTotalWithdrawals;
 
   constructor(name, cash) {
     this.#name = name;
     this.#cash = cash;
+    this.#dailyAllowance = 40;
+    this.#dayTotalWithdrawals = 0;
   }
 
   get name() {
@@ -24,6 +28,7 @@ class Wallet {
     }
 
     this.#cash -= amount;
+    this.#dayTotalWithdrawals += amount;
     return amount;
   }
 
@@ -37,9 +42,17 @@ class Wallet {
     wallet.deposit(withdrawnAmount);
   }
 
+  reportDailyAllowance () {
+    this.#dayTotalWithdrawals = 0;
+  }
+
+  setDailyAllowance (newAllowance) {
+    this.#dailyAllowance = newAllowance;
+  }
+
   reportBalance() {
     console.log(
-      `Name: ${this.name}, balance: ${eurosFormatter.format(this.#cash)}`
+      `Name: ${this.name}, balance: ${eurosFormatter.format(this.#cash)}, daily allowance ${eurosFormatter.format(this.#dailyAllowance)}, total withdrawn today : ${eurosFormatter.format(this.#dayTotalWithdrawals)}`
     );
   }
 }
